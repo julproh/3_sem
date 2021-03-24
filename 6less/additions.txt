@@ -1,0 +1,66 @@
+	m_length = 0;
+	m_data = new char[0];
+
+>
+
+	m_length = 1;
+	m_data = new char(c);
+
+>
+
+	if (c_string)
+	{
+		m_length = strlen(c_string);
+		m_data = new char[m_length];
+		for (std::size_t i = 0; i < m_length; ++i)
+			m_data[i] = c_string[i];
+	}
+	else
+	{
+		m_length = 0;
+		m_data = new char[0];
+	}
+
+>
+
+	m_length = other.length();
+	m_data = new char[m_length];
+	for (std::size_t i = 0; i < m_length; ++i)
+		m_data[i] = other[i]; // strcpy
+
+>
+
+	m_data = other.m_data;
+	m_length = other.m_length;
+	other.m_data = nullptr;
+	other.m_length = 0;
+
+>
+
+	delete [] m_data;
+
+>
+
+	using std::swap;
+
+	swap(this->m_data, other.m_data);
+	swap(this->m_length, other.m_length);
+
+>
+
+	if (this == &other) return *this; // optimization
+
+	delete m_data;
+	m_length = other.length();
+	m_data = new char[m_length];
+	for (std::size_t i = 0; i < m_length; ++i)
+		m_data[i] = other[i];
+
+	return (*this);
+
+>
+
+	this->swap(other);
+	other.m_data = nullptr;
+	other.m_length = 0;
+	return (*this);
